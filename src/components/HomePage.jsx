@@ -1,14 +1,22 @@
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import React, { useState } from "react";
 
-const HomePage = ({ items }) => {
+const HomePage = ({ items, setItems }) => {
   const totalTasks = items.length;
   const completedTasks = items.filter((item) => item.completed).length;
   const progress =
     totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
 
+  // Function to toggle task completion
+  const toggleComplete = (id) => {
+    const updatedItems = items.map((item) =>
+      item.id === id ? { ...item, completed: !item.completed } : item
+    );
+    setItems(updatedItems); // Update the state with the modified items
+  };
+
   return (
     <div style={styles.container}>
-      <h1>Task Overview</h1>
+      <h1 style={styles.heading}>Task Overview</h1>
       <p>Total tasks: {totalTasks}</p>
       <p>Completed tasks: {completedTasks}</p>
 
@@ -21,16 +29,23 @@ const HomePage = ({ items }) => {
       {/* List all tasks */}
       <ul style={styles.taskList}>
         {items.map((item) => (
-          <Link key={item.id} to={`/task/${item.id}`}>
-            <li style={styles.taskItem}>
+          <li key={item.id} style={styles.taskItem}>
+            <div style={styles.taskInfo}>
+              {/* Checkbox to mark as completed */}
+              <input
+                type="checkbox"
+                checked={item.completed}
+                onChange={() => toggleComplete(item.id)} // Mark task as completed
+                style={styles.checkbox}
+              />
               <span style={item.completed ? styles.completedTask : styles.task}>
                 {item.name}{" "}
                 {item.important && (
                   <strong style={styles.important}>(Important)</strong>
                 )}
               </span>
-            </li>
-          </Link>
+            </div>
+          </li>
         ))}
       </ul>
     </div>
@@ -43,6 +58,9 @@ const styles = {
     maxWidth: "800px",
     margin: "0 auto",
     textAlign: "center",
+  },
+  heading: {
+    textDecoration: "none", // Ensure no underline on heading
   },
   progressContainer: {
     height: "20px",
@@ -69,15 +87,25 @@ const styles = {
     marginBottom: "10px",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
   },
+  taskInfo: {
+    display: "flex",
+    alignItems: "center",
+  },
+  checkbox: {
+    marginRight: "15px",
+  },
   task: {
     fontSize: "16px",
-    textDecoration: "none", // Ensure no underline for active tasks
-    color: "#333", // Default text color for tasks
+    textDecoration: "none", // Ensure no underline on task text
+    color: "#333",
+    transition: "all 0.3s ease", // Add a transition to animate when completed
   },
   completedTask: {
     fontSize: "16px",
-    textDecoration: "line-through", // Keep line-through for completed tasks
+    textDecoration: "line-through",
     color: "#777",
+    opacity: 0.6, // Make the completed task a bit faded
+    transition: "all 0.3s ease", // Smooth animation for the change
   },
   important: {
     color: "#d9534f",

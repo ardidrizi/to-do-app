@@ -1,13 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CreateItemForm from "./components/CreateItemForm";
-import ItemList from "./components/ItemList";
-import TaskDetails from "./components/TaskDetails";
-import HomePage from "./components/HomePage";
-import ErrorPage from "./components/ErrorPage"; // Import the ErrorPage
-import UpdateTaskForm from "./components/UpdateTaskForm"; // Import the UpdateTaskForm
+import HomePage from "./components/HomePage"; // Import HomePage
+import UpdateTaskForm from "./components/UpdateTaskForm"; // Import UpdateTaskForm
 
 function App() {
   const [items, setItems] = useState([
@@ -27,55 +24,28 @@ function App() {
     setItems([...items, { ...newItem, completed: false }]);
   };
 
-  const toggleComplete = (id) => {
-    setItems(
-      items.map((item) =>
-        item.id === id ? { ...item, completed: !item.completed } : item
-      )
-    );
-  };
-
-  const deleteItem = (id) => {
-    setItems(items.filter((item) => item.id !== id));
-  };
-
-  // Function to update the task
-  const updateItem = (updatedItem) => {
-    setItems(
-      items.map((item) => (item.id === updatedItem.id ? updatedItem : item))
-    );
-  };
-
   return (
     <Router>
       <div id="root">
         <Navbar />
         <div className="content">
           <Routes>
-            <Route path="/" element={<HomePage items={items} />} />
+            <Route
+              path="/"
+              element={<HomePage items={items} setItems={setItems} />}
+            />
             <Route
               path="/create"
               element={
                 <div>
                   <CreateItemForm addItem={addItem} />
-                  <ItemList
-                    items={items}
-                    toggleComplete={toggleComplete}
-                    deleteItem={deleteItem}
-                  />
                 </div>
               }
             />
-            <Route path="/task/:id" element={<TaskDetails items={items} />} />
-
-            {/* Update Task Page */}
             <Route
               path="/update/:id"
-              element={<UpdateTaskForm items={items} updateItem={updateItem} />}
+              element={<UpdateTaskForm items={items} setItems={setItems} />}
             />
-
-            {/* Error Page */}
-            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
         <Footer />
