@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 const ItemList = ({ items, toggleComplete, deleteItem }) => {
   return (
@@ -9,15 +9,20 @@ const ItemList = ({ items, toggleComplete, deleteItem }) => {
           <input
             type="checkbox"
             checked={item.completed}
-            onChange={() => toggleComplete(item.id)} // Toggle task completion
+            onChange={() => toggleComplete(item.id)}
             style={styles.checkbox}
           />
-          <span style={item.completed ? styles.completed : styles.task}>
+          <span style={item.completed ? styles.completedTask : styles.task}>
             {item.name}{" "}
             {item.important && (
               <strong style={styles.important}>(Important)</strong>
             )}
           </span>
+
+          {/* Edit button links to the update form */}
+          <Link to={`/update/${item.id}`} style={styles.editLink}>
+            <button style={styles.editButton}>Edit</button>
+          </Link>
 
           {/* Delete button */}
           <button onClick={() => deleteItem(item.id)} style={styles.button}>
@@ -29,7 +34,7 @@ const ItemList = ({ items, toggleComplete, deleteItem }) => {
   );
 };
 
-// Basic styles for the task list with enhanced UI
+// Styles for the task list
 const styles = {
   ul: {
     listStyleType: "none",
@@ -45,20 +50,14 @@ const styles = {
     borderRadius: "5px",
     marginBottom: "10px",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-    transition: "background-color 0.3s ease",
-  },
-  liHover: {
-    backgroundColor: "#f0f0f0",
   },
   checkbox: {
     marginRight: "15px",
   },
   task: {
-    flex: 1,
     fontSize: "16px",
   },
-  completed: {
-    flex: 1,
+  completedTask: {
     fontSize: "16px",
     textDecoration: "line-through",
     color: "#777",
@@ -68,6 +67,18 @@ const styles = {
     fontWeight: "bold",
     marginLeft: "10px",
   },
+  editLink: {
+    marginRight: "10px",
+  },
+  editButton: {
+    backgroundColor: "#007bff",
+    color: "#fff",
+    border: "none",
+    padding: "7px 12px",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginRight: "10px",
+  },
   button: {
     backgroundColor: "#d9534f",
     color: "#fff",
@@ -75,10 +86,6 @@ const styles = {
     padding: "7px 12px",
     borderRadius: "5px",
     cursor: "pointer",
-    transition: "background-color 0.3s ease",
-  },
-  buttonHover: {
-    backgroundColor: "#c9302c",
   },
 };
 

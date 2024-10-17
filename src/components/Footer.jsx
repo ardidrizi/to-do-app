@@ -8,13 +8,16 @@ const Footer = () => {
 
 const styles = {
   footer: {
-    backgroundColor: "#333", // Dark background color
-    color: "#fff", // White text color
-    textAlign: "center", // Center the text
-    padding: "10px", // Padding around the footer
-    position: "fixed", // Fix the footer to the bottom
-    bottom: 0, // Position at the very bottom
+    position: "fixed", // Fix the footer to the bottom of the viewport
+    bottom: 0,
+    left: 0,
     width: "100%", // Full width
+    backgroundColor: "rgba(0, 0, 0, 0.7)", // Transparent dark background
+    color: "#fff", // White text color for contrast
+    textAlign: "center",
+    padding: "10px",
+    backdropFilter: "blur(10px)", // Add blur for modern, frosted glass effect
+    boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.5)", // Subtle shadow above the footer
   },
 };
 

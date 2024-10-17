@@ -1,11 +1,21 @@
-body {
+/* Ensure the content has enough space so the footer doesn't overlap */
+body,
+html {
+  height: 100%;
   margin: 0;
-  font-family: Arial, sans-serif;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the layout takes the full height */
 }
 
 .content {
-  padding: 20px;
-  text-align: center;
-  min-height: calc(100vh - 80px); /* Adjust for footer and navbar */
-  box-sizing: border-box;
+  flex: 1;
+  padding-bottom: 60px; /* Make space for the footer */
+}
+
+footer {
+  height: 60px; /* Footer height must match the padding above */
 }
